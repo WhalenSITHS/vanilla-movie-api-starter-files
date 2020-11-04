@@ -1,13 +1,45 @@
 import { genres } from "./genre";
 import { DOMSelectors } from "./DOM";
+//button selectors
+//variable for page?
+//function for changed page?
+//next.addeventlistener
+//update page variable
+//re-run query()
+//variable for page?
+let pageNumber = 1;
+//function for changed page?
+
 const listen = function () {
   DOMSelectors.searchForm.addEventListener("submit", function (e) {
+    const nextPage = function () {
+      //next.addeventlistener
+      DOMSelectors.btnNext.addEventListener("click", function () {
+        //update page variable
+        pageNumber++;
+        //re-run query()
+        searchQuery(pageNumber);
+      });
+    };
+    const previousPage = function () {
+      //next.addeventlistener
+      DOMSelectors.btnPrev.addEventListener("click", function () {
+        //update page variable
+        pageNumber--;
+        //re-run query()
+        searchQuery(pageNumber);
+      });
+    };
+    previousPage();
+    nextPage();
     e.preventDefault();
-    DOMSelectors.grid.innerHTML = "";
+
     const searchParams = DOMSelectors.searchArea.value;
-    const searchQuery = async function () {
+    const searchQuery = async function (pageNumber) {
+      console.log(pageNumber);
+      DOMSelectors.grid.innerHTML = "";
       const key = `1fd276ec57b4baedacae00246e5cf4b7`;
-      const query = `https://api.themoviedb.org/3/search/movie?api_key=1fd276ec57b4baedacae00246e5cf4b7&language=en-US&query=${searchParams}&page=1&include_adult=false`;
+      const query = `https://api.themoviedb.org/3/search/movie?api_key=1fd276ec57b4baedacae00246e5cf4b7&language=en-US&query=${searchParams}&page=${pageNumber}&include_adult=false`;
       try {
         const response = await fetch(query);
         const data = await response.json();

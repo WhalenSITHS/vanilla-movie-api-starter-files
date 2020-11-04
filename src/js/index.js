@@ -1,9 +1,33 @@
 import { genres } from "./genre";
 import { DOMSelectors } from "./DOM";
 const key = `1fd276ec57b4baedacae00246e5cf4b7`;
-const query = `https://api.themoviedb.org/3/discover/movie?api_key=${key}&language=en-US&sort_by=vote_average.desc&include_adult=false&include_video=false&page=1&vote_count.gte=10000&vote_average.gte=8`;
 
-const init = async function () {
+//variable for page?
+let pageNumber = 1;
+//function for changed page?
+const nextPage = function () {
+  //next.addeventlistener
+  DOMSelectors.btnNext.addEventListener("click", function () {
+    //update page variable
+    pageNumber++;
+    //re-run query()
+    init(pageNumber);
+  });
+};
+const previousPage = function () {
+  //next.addeventlistener
+  DOMSelectors.btnPrev.addEventListener("click", function () {
+    //update page variable
+    pageNumber--;
+    //re-run query()
+    init(pageNumber);
+  });
+};
+previousPage();
+nextPage();
+const init = async function (pageNumber) {
+  DOMSelectors.grid.innerHTML = "";
+  const query = `https://api.themoviedb.org/3/discover/movie?api_key=${key}&language=en-US&sort_by=vote_average.desc&include_adult=false&include_video=false&page=${pageNumber}&vote_count.gte=10000&vote_average.gte=8`;
   try {
     const response = await fetch(query);
     const data = await response.json();
@@ -52,4 +76,4 @@ const init = async function () {
     console.log(error);
   }
 };
-init();
+init(pageNumber);
